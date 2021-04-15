@@ -211,8 +211,8 @@ class settingswindow(QDialog):
         self.close()
 
     def preview(self):
-        pygame.mixer.stop()
-        midi_file = tempfile.NamedTemporaryFile()
+        pygame.mixer.music.stop()
+        midi_file = tempfile.NamedTemporaryFile(delete=False)
         mid = MidiFile()
         track = MidiTrack()
         mid.tracks.append(track)
@@ -227,8 +227,10 @@ class settingswindow(QDialog):
         )
         mid.save(file=midi_file)
         midi_file.flush()
-        pygame.mixer.Sound(midi_file.name).play()
         midi_file.close()
+        pygame.mixer.music.load(midi_file.name)
+        pygame.mixer.music.play()
+        os.remove(midi_file.name)
 
     def exercise_clicked(self, a):
         if self.ui.exerciseList.currentItem():

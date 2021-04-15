@@ -288,7 +288,7 @@ class mainwindow(QMainWindow):
 
     def play_exercise(self):
         self.stop()
-        midi_file = tempfile.NamedTemporaryFile()
+        midi_file = tempfile.NamedTemporaryFile(delete=False)
         ex = self.exercises[self.exercise]
         name = ex[0]
         seq = ex[1]
@@ -337,14 +337,16 @@ class mainwindow(QMainWindow):
             timer.start(timer_delay + duration*idx)
         mid.save(file=midi_file)
         midi_file.flush()
-        pygame.mixer.Sound(midi_file.name).play()
         midi_file.close()
+        pygame.mixer.music.load(midi_file.name)
+        pygame.mixer.music.play()
+        os.remove(midi_file.name)
 
     def stop(self):
         for timer in self.timers:
             timer.stop()
         self.ui.progressBar.setValue(0)
-        pygame.mixer.stop()
+        pygame.mixer.music.stop()
 
     def reload_settings(self):
         logging.debug("Settings saved, reloading")
