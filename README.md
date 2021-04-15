@@ -18,3 +18,8 @@ Other than the Python libraries specified in `requirements.txt` you will need a 
 
 Windows and OSX (currently untested) ship with their own. On Linux distributions you will need to install `fluidsynth` or `timidity`.
 
+## Running
+
+Install the dependencies either from your distribution or in a virtualenv running `pip install -r requirements.txt`
+
+Start the program with `python main.py`
