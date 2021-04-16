@@ -8,10 +8,10 @@ import logging
 from ui.settings import Ui_Settings
 from exerciseedit import exerciseEditWindow
 
-from PySide6.QtWidgets import (
+from PySide2.QtWidgets import (
     QApplication, QStyle, QDialog
 )
-from PySide6.QtCore import QSettings, QCoreApplication, Signal
+from PySide2.QtCore import QSettings, QCoreApplication, Signal
 
 from mido import Message, MidiFile, MidiTrack
 

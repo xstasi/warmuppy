@@ -2,9 +2,9 @@ import os
 import logging
 from ui.exerciseedit import Ui_ExerciseEdit
 
-from PySide6.QtWidgets import QDialog
+from PySide2.QtWidgets import QDialog
 
-from PySide6.QtCore import Signal
+from PySide2.QtCore import Signal
 
 
 class exerciseEditWindow(QDialog):

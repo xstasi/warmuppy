@@ -10,10 +10,10 @@ from ui.howto import Ui_Howto
 from ui.about import Ui_About
 from settings import settingswindow
 
-from PySide6.QtWidgets import (
+from PySide2.QtWidgets import (
     QApplication, QMainWindow, QRadioButton, QStyle, QDialog
 )
-from PySide6.QtCore import QTimer, QSettings, QCoreApplication, Signal
+from PySide2.QtCore import QTimer, QSettings, QCoreApplication, Signal
 
 from mido import Message, MidiFile, MidiTrack
 
