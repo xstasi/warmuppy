@@ -15,6 +15,10 @@ from PySide2.QtWidgets import (
 )
 from PySide2.QtCore import QTimer, QSettings, QCoreApplication, Signal
 
+from PySide2.QtGui import QIcon
+
+import resources.resources
+
 from mido import Message, MidiFile, MidiTrack
 
 pygame.init()
@@ -63,6 +67,7 @@ class aboutwindow(QDialog):
     def __init__(self, parent=None):
         super(aboutwindow, self).__init__()
         self.ui = Ui_About()
+        self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
         self.ui.labelNameVersion.setText(
             f"{APPLICATION_NAME} {APPLICATION_VERSION}"
@@ -74,6 +79,7 @@ class howtowindow(QDialog):
     def __init__(self, parent=None):
         super(howtowindow, self).__init__()
         self.ui = Ui_Howto()
+        self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
         self.ui.pushButton.clicked.connect(self.accept)
 
@@ -131,6 +137,7 @@ class mainwindow(QMainWindow):
 
         # Load UI
         self.ui = Ui_MainWindow()
+        self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
 
         # Restyle buttons to use QT builtin icons,

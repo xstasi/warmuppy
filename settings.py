@@ -13,6 +13,10 @@ from PySide2.QtWidgets import (
 )
 from PySide2.QtCore import QSettings, QCoreApplication, Signal
 
+from PySide2.QtGui import QIcon
+
+import resources.resources
+
 from mido import Message, MidiFile, MidiTrack
 
 pygame.init()
@@ -132,6 +136,7 @@ class settingswindow(QDialog):
         self.ui = Ui_Settings()
         if parent:
             self.settings_signal.connect(parent.settings_signal.emit)
+        self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
         self.settings = QSettings()
         self.exercises = []

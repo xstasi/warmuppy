@@ -6,6 +6,9 @@ from PySide2.QtWidgets import QDialog
 
 from PySide2.QtCore import Signal
 
+from PySide2.QtGui import QIcon
+
+import resources.resources
 
 class exerciseEditWindow(QDialog):
 
@@ -16,6 +19,7 @@ class exerciseEditWindow(QDialog):
         # Standard constructor stuff
         super(exerciseEditWindow, self).__init__()
         self.ui = Ui_ExerciseEdit()
+        self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
         if os.getenv("DEBUG") == 'TRUE':
             logging.basicConfig(level=logging.DEBUG)
