@@ -4,6 +4,10 @@
 
 Warmuppy is a tool to help you practice vocal warming up by providing exercises.
 
+This is a screenshot of the main window:
+
+![alt text](https://github.com/xstasi/warmuppy/blob/master/resources/screenshot.png?raw=true)
+
 ## Features
 
 * Progressive exercising with custom step amount
