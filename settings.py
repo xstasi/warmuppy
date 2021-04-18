@@ -156,6 +156,7 @@ class settingswindow(QDialog):
         self.ui.instrumentList.setCurrentRow(self.instrument)
 
         self.ui.editButton.setEnabled(False)
+        self.ui.removeButton.setEnabled(False)
 
         # Restyle buttons to use QT builtin icons,
         #  which cannot be done on qtdesigner
@@ -170,10 +171,24 @@ class settingswindow(QDialog):
         self.ui.instrumentList.currentItemChanged.connect(self.set_instrument)
         self.ui.addButton.clicked.connect(self.add_exercise)
         self.ui.editButton.clicked.connect(self.edit_exercise)
+        self.ui.removeButton.clicked.connect(self.remove_exercise)
         self.ui.exerciseList.currentItemChanged.connect(self.exercise_clicked)
 
         # Sub-dialog signals
         self.exercise_signal.connect(self.reload_exercise)
+
+    def remove_exercise(self):
+        exname = self.ui.exerciseList.currentItem().text()
+        new_exercises = []
+        for ex in self.exercises:
+            if ex[0] != exname:
+                new_exercises.append(ex)
+        self.exercises = new_exercises
+
+        self.ui.exerciseList.clear()
+        for ex in self.exercises:
+            self.ui.exerciseList.addItem(ex[0])
+        print(self.exercises)
 
     def reload_exercise(self, exname, extext):
         exercise_names = []
@@ -240,8 +255,10 @@ class settingswindow(QDialog):
     def exercise_clicked(self, a):
         if self.ui.exerciseList.currentItem():
             self.ui.editButton.setEnabled(True)
+            self.ui.removeButton.setEnabled(True)
         else:
             self.ui.editButton.setEnabled(False)
+            self.ui.removeButton.setEnabled(False)
 
     def add_exercise(self):
         exercise_names = []
