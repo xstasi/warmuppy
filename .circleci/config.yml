@@ -1,0 +1,115 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.3.4
+  win: circleci/windows@2.4.0
+
+jobs:
+  build-and-test:
+    #executor: python/default
+    #docker:
+    #  - image: cimg/base:2021.04
+    machine:
+      image: ubuntu-2004:202101-01
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - pyenv_opt
+      - run: test -d /opt/circleci/.pyenv/.git || (cd ; sudo rm -rf  /opt/circleci/.pyenv ; curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash; echo -e 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' | tee ~/.bashrc ~/.profile ~/.bash_profile)
+      - run: env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install --skip-existing  3.9.4
+      - save_cache:
+          key: pyenv_opt
+          paths:
+            - /opt/circleci/.pyenv
+      - run: pyenv virtualenv 3.9.4 dist
+      - run: pyenv local dist
+      - run: sudo apt-get update
+      - run: sudo apt-get install xvfb libxkbcommon-x11-0 x11-utils libegl1 libgstreamer-plugins-base1.0-0 libodbc1 libpq5 libpulse-mainloop-glib0 libspeechd2 libwayland-server0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 pulseaudio freepats
+      - run: pulseaudio -D
+      - run: pip install -r requirements.txt
+      - run: python setup.py build
+      - run: python setup.py install
+      - run: pip install pytest pytest-qt pytest-forked
+      - run: xvfb-run -a pytest --junitxml=test-results/junit.xml test/
+      - store_test_results:
+          path: test-results
+  build-windows-bundle:
+    executor: win/default
+    steps:
+      - checkout
+      - run: choco install python -y --version 3.9.4
+      - run:
+          shell: bash.exe
+          command: |
+            /c/Python39/python.exe -m venv ../venv
+      - run:
+          shell: bash.exe
+          command: |
+            . ../venv/Scripts/activate
+            export PATH="/usr/bin:$PATH"
+            pip install -r requirements.txt
+            pip install wheel setuptools
+            python setup.py install
+            pip install pyinstaller
+            pyinstaller --clean -F -w -i '.\src\warmuppy\resources\icon.ico' -n warmuppy main.py
+      - store_artifacts:
+          path: 'C:\Users\circleci\project\dist\warmuppy.exe'
+
+  build-linux-bundle:
+    executor: python/default
+    steps:
+      - checkout
+      - run: pyenv shell 3.9.4 || env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.9.4
+      - run: pyenv virtualenv 3.9.4 dist
+      - run: pyenv local dist
+      - python/install-packages:
+          pip-dependency-file: requirements.txt
+          pkg-manager: pip
+      - python/install-packages:
+          args: pyinstaller
+          pkg-manager: pip
+      - run:
+          command: python setup.py install
+          name: Install module
+      - run:
+          command: pyinstaller --clean -F -w -i src/warmuppy/resources/icon.ico -n warmuppy main.py
+          name: Build binary
+      - store_artifacts:
+          path: dist/warmuppy
+      - persist_to_workspace:
+          root: dist/
+          paths:
+            - warmuppy
+
+  upload-artifacts:
+    docker:
+      - image: cibuilds/github:0.12.1
+    steps:
+      - attach_workspace:
+          at: ./dist
+      - run:
+          name: "Publish Release on GitHub"
+          command: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete -draft -n dev -c dev dev ./dist
+workflows:
+  test-stuff:
+    jobs:
+      - build-and-test
+  build-bundles:
+    jobs:
+      - build-windows-bundle:
+          filters:
+            branches:
+              only:
+                - master
+                - dev
+      - build-linux-bundle:
+          filters:
+            branches:
+              only:
+                - master
+                - dev
+      - upload-artifacts:
+          requires:
+            - build-windows-bundle
+            - build-linux-bundle
