@@ -1,6 +1,6 @@
 import os
 import logging
-from ui.exerciseedit import Ui_ExerciseEdit
+from warmuppy.ui.exerciseedit import Ui_ExerciseEdit
 
 from PySide2.QtWidgets import QDialog
 
@@ -8,7 +8,8 @@ from PySide2.QtCore import Signal
 
 from PySide2.QtGui import QIcon
 
-import resources.resources
+from warmuppy.resources import resources # noqa
+
 
 class exerciseEditWindow(QDialog):
 

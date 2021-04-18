@@ -39,6 +39,6 @@ The binary releases can be rebuilt using pyinstaller:
 ```
 pip install -r requirements.txt
 pip install pyinstaller
-pyinstaller --clean -F -w -i resources/icon.ico -n warmuppy  main.py
+pyinstaller --clean -F -w -i src/warmuppy/resources/icon.ico -n warmuppy main.py
 ```
 

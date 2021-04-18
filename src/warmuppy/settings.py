@@ -5,8 +5,8 @@ import pygame
 import tempfile
 import logging
 
-from ui.settings import Ui_Settings
-from exerciseedit import exerciseEditWindow
+from warmuppy.ui.settings import Ui_Settings
+from warmuppy.exerciseedit import exerciseEditWindow
 
 from PySide2.QtWidgets import (
     QApplication, QStyle, QDialog
@@ -15,7 +15,7 @@ from PySide2.QtCore import QSettings, QCoreApplication, Signal
 
 from PySide2.QtGui import QIcon
 
-import resources.resources
+from warmuppy.resources import resources # noqa
 
 from mido import Message, MidiFile, MidiTrack
 
