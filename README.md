@@ -26,19 +26,23 @@ This is a screenshot of the main window:
     * If running ArchLinux, you will need to install [freepats-legacy](https://aur.archlinux.org/packages/freepats-legacy/) from AUR and make a symlink from `/usr/share/freepats/timidity-freepats.cfg` to `/etc/timidity/freepats.cfg`
 
 
-## Running
+## Running and building
 
 Prebuilt single binary releases for Windows and Linux can be found in the GitHub [release](https://github.com/xstasi/warmuppy/releases) page. They contain all the requirements, except for the synthesiser on Linux.
 
-The program can also be started directly from the source tree. To do this first make sure that the dependencies are installed using `pip install -r requirements.txt` (using a [virtualenv](https://docs.python.org/3/tutorial/venv.html) is encouraged), then run the program with: `python main.py`
+The source package can be built and installed using [setuptools](https://pypi.org/project/setuptools/) (using a [virtualenv](https://docs.python.org/3/tutorial/venv.html) is encouraged) by running:
 
-## Building
+```
+pip install -r requirements.txt
+python setup.py install
+```
 
-The binary releases can be rebuilt using pyinstaller:
+The single-binary releases can be rebuilt on either Windows or Linux by using pyinstaller:
 
 ```
 pip install -r requirements.txt
 pip install pyinstaller
+python setup.py install
 pyinstaller --clean -F -w -i src/warmuppy/resources/icon.ico -n warmuppy main.py
 ```
 
