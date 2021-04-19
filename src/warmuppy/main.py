@@ -304,12 +304,14 @@ class mainwindow(QMainWindow):
             timer.timeout.connect(
                 lambda pc=percent: self.ui.progressBar.setValue(pc)
             )
-            logging.debug(f"Starting timer for {percent}% after {delay}ms")
-            timer.start(timer_delay + duration*idx)
+            timer.setInterval(timer_delay + duration*idx)
+            logging.debug(f"Setting timer for {percent}% after {delay}ms")
         mid.save(file=midi_file)
         midi_file.flush()
         midi_file.close()
         pygame.mixer.music.load(midi_file.name)
+        for timer in self.timers:
+            timer.start()
         pygame.mixer.music.play()
         os.remove(midi_file.name)
 
