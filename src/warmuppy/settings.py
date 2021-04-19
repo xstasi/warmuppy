@@ -1,15 +1,10 @@
-import sys
 import os
 
 import pygame
 import tempfile
-import logging
 
-from PySide2.QtWidgets import (
-    QApplication, QStyle, QDialog
-)
-from PySide2.QtCore import QSettings, QCoreApplication, Signal
-
+from PySide2.QtWidgets import QStyle, QDialog
+from PySide2.QtCore import QSettings, Signal
 from PySide2.QtGui import QIcon
 
 from mido import Message, MidiFile, MidiTrack
@@ -17,16 +12,21 @@ from mido import Message, MidiFile, MidiTrack
 from warmuppy.ui.settings import Ui_Settings
 from warmuppy.exerciseedit import exerciseEditWindow
 from warmuppy.resources import resources # noqa
-from warmuppy.constants import *
+from warmuppy.constants import INSTRUMENTS
 
 pygame.init()
 
+
 class settingswindow(QDialog):
 
+    # Empty signal to tell the main window that settings changed
     settings_signal = Signal()
+    # Connected to the exercise editor, to receive name/data from it
     exercise_signal = Signal(str, str)
 
     def __init__(self, parent=None):
+
+        # Standard constructor stuff
         super(settingswindow, self).__init__()
         self.ui = Ui_Settings()
         if parent:
@@ -34,8 +34,12 @@ class settingswindow(QDialog):
         self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
         self.settings = QSettings()
+
+        # Instance variables
         self.exercises = []
         self.instrument = int(self.settings.value('instrument'))
+
+        # Load exercises from stored settings
         self.settings.beginReadArray('exercises')
         for ex in self.settings.allKeys():
             if ex == 'size':
@@ -46,10 +50,13 @@ class settingswindow(QDialog):
             ])
             self.ui.exerciseList.addItem(ex)
         self.settings.endArray()
+
+        # Load instruments from the program constants
         for inst in INSTRUMENTS:
             self.ui.instrumentList.addItem(inst)
         self.ui.instrumentList.setCurrentRow(self.instrument)
 
+        # Nothing is selected by default so disable edit and remove
         self.ui.editButton.setEnabled(False)
         self.ui.removeButton.setEnabled(False)
 
@@ -73,23 +80,29 @@ class settingswindow(QDialog):
         self.exercise_signal.connect(self.reload_exercise)
 
     def remove_exercise(self):
+        # Get selected exercise
         exname = self.ui.exerciseList.currentItem().text()
+
+        # Replace self.exercises with a copy without the selected exercise
         new_exercises = []
         for ex in self.exercises:
             if ex[0] != exname:
                 new_exercises.append(ex)
         self.exercises = new_exercises
 
+        # Reload the UI exercise list from memory
         self.ui.exerciseList.clear()
         for ex in self.exercises:
             self.ui.exerciseList.addItem(ex[0])
-        print(self.exercises)
 
     def reload_exercise(self, exname, extext):
+        # Load all exercise names
         exercise_names = []
         for ex in self.exercises:
             exercise_names.append(ex[0])
         new_exercises = []
+        # If the reloaded exercise is existing then update it in memory,
+        #   otherwise just add it
         if exname in exercise_names:
             for ex in self.exercises:
                 if ex[0] == exname:
@@ -104,10 +117,10 @@ class settingswindow(QDialog):
         else:
             self.exercises.append([exname, extext.split()])
 
+        # Reload UI exercises
         self.ui.exerciseList.clear()
         for ex in self.exercises:
             self.ui.exerciseList.addItem(ex[0])
-        print(self.exercises)
 
     def set_instrument(self, s):
         instrument_name = s.text()
@@ -122,6 +135,7 @@ class settingswindow(QDialog):
             self.settings.setValue(ex[0], ex[1])
         self.settings.endArray()
         self.settings.setValue('instrument', self.instrument)
+        # Let parent know that settings were changed
         self.settings_signal.emit()
         self.close()
 
@@ -148,6 +162,7 @@ class settingswindow(QDialog):
         os.remove(midi_file.name)
 
     def exercise_clicked(self, a):
+        # Enable 'edit' and 'remove' if an exercise was selected
         if self.ui.exerciseList.currentItem():
             self.ui.editButton.setEnabled(True)
             self.ui.removeButton.setEnabled(True)

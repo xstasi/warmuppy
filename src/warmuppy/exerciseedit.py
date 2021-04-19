@@ -1,4 +1,3 @@
-import os
 import logging
 from warmuppy.ui.exerciseedit import Ui_ExerciseEdit
 
@@ -11,8 +10,10 @@ from PySide2.QtGui import QIcon
 from warmuppy.resources import resources # noqa
 
 
+# Generic exercise editing window
 class exerciseEditWindow(QDialog):
 
+    # Used to transmit the exercise name and data back to the settings window
     exercise_signal = Signal(str, str)
 
     def __init__(self, op, exname='', extext='', exercises=[], parent=None):
@@ -22,8 +23,6 @@ class exerciseEditWindow(QDialog):
         self.ui = Ui_ExerciseEdit()
         self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
-        if os.getenv("DEBUG") == 'TRUE':
-            logging.basicConfig(level=logging.DEBUG)
 
         # Instance variables
         self.parent = parent
@@ -32,8 +31,8 @@ class exerciseEditWindow(QDialog):
         self.extext = extext
         self.exercises = exercises
 
-        # Start new exercies as invalid to prevent saving empty stuff
         if op == 'add':
+            # Start new exercies as invalid to prevent saving empty stuff
             self.ui.saveButton.setEnabled(False)
         else:
             # Existing exercises are assumed to be already good
