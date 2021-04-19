@@ -18,50 +18,14 @@ from PySide2.QtCore import QTimer, QSettings, QCoreApplication, Signal
 from PySide2.QtGui import QIcon
 
 from warmuppy.resources import resources # noqa
+from warmuppy.constants import *
 
 from mido import Message, MidiFile, MidiTrack
 
 pygame.init()
 
-APPLICATION_NAME = 'Warmuppy'
-APPLICATION_VERSION = '0.1'
-
-NOTES = [
-    "C",
-    "Cs",
-    "D",
-    "Ds",
-    "E",
-    "F",
-    "Fs",
-    "G",
-    "Gs",
-    "A",
-    "As",
-    "B",
-]
-
 if os.getenv("DEBUG") == 'TRUE':
     logging.basicConfig(level=logging.DEBUG)
-
-DEFAULT_BPM = 100
-DEFAULT_CUT = 0.02
-DEFAULT_STEP = 1
-DEFAULT_EXERCISES = [
-    ["Scale up/down, 2 steps", [0, 2, 4, 2, 0]],
-    ["Octave up/down", [0, 12, 0]],
-]
-DEFAULT_EXERCISE = 0
-DEFAULT_PREVIEW = True
-DEFAULT_PREVIEW_TIME = 3
-DEFAULT_PROLONG = True
-DEFAULT_PROLONG_TIME = 3
-DEFAULT_INSTRUMENT = 0
-
-NOTE_CHAN = 0
-
-EXERCISE = 0
-
 
 class aboutwindow(QDialog):
     def __init__(self, parent=None):

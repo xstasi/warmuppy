@@ -5,9 +5,6 @@ import pygame
 import tempfile
 import logging
 
-from warmuppy.ui.settings import Ui_Settings
-from warmuppy.exerciseedit import exerciseEditWindow
-
 from PySide2.QtWidgets import (
     QApplication, QStyle, QDialog
 )
@@ -15,116 +12,14 @@ from PySide2.QtCore import QSettings, QCoreApplication, Signal
 
 from PySide2.QtGui import QIcon
 
-from warmuppy.resources import resources # noqa
-
 from mido import Message, MidiFile, MidiTrack
 
+from warmuppy.ui.settings import Ui_Settings
+from warmuppy.exerciseedit import exerciseEditWindow
+from warmuppy.resources import resources # noqa
+from warmuppy.constants import *
+
 pygame.init()
-
-APPLICATION_NAME = 'Warmuppy'
-
-INSTRUMENTS = [
-    "Acoustic Grand Piano",
-    "Bright Acoustic Piano",
-    "Electric Grand Piano",
-    "Honky-Tonk Piano",
-    "Rhodes Piano",
-    "Chorused Piano",
-    "Harpsichord",
-    "Clavinet",
-    "Celesta",
-    "Glockenspiel",
-    "Music Box",
-    "Vibraphone",
-    "Marimba",
-    "Xylophone",
-    "Tubular Bells",
-    "Dulcimer",
-    "Hammond Organ",
-    "Percussive Organ",
-    "Rock Organ",
-    "Church Organ",
-    "Reed Organ",
-    "Accordion",
-    "Harmonica",
-    "Tango Accordion",
-    "Acoustic Guitar - Nylon",
-    "Acoustic Guitar - Steel",
-    "Electric Guitar - Jazz",
-    "Electric Guitar - Clean",
-    "Electric Guitar - Muted",
-    "Overdriven Guitar",
-    "Distortion Guitar",
-    "Guitar Harmonics",
-    "Acoustic Bass",
-    "Electric Bass - Finger",
-    "Electric Bass - Pick",
-    "Fretless Bass",
-    "Slap Bass 1",
-    "Slap Bass 2",
-    "Synth Bass 1",
-    "Synth Bass 2",
-    "Violin",
-    "Viola",
-    "Cello",
-    "Contrabass",
-    "Tremolo Strings",
-    "Pizzicato Strings",
-    "Orchestral Harp",
-    "Timpani",
-    "String Ensemble 1",
-    "String Ensemble 2",
-    "Synth. Strings 1",
-    "Synth. Strings 2",
-    "Choir Aahs",
-    "Voice Oohs",
-    "Synth Voice",
-    "Orchestra Hit",
-    "Trumpet",
-    "Trombone",
-    "Tuba",
-    "Muted Trumpet",
-    "French Horn",
-    "Brass Section",
-    "Synth. Brass 1",
-    "Synth. Brass 2",
-    "Soprano Sax",
-    "Alto Sax",
-    "Tenor Sax",
-    "Baritone Sax",
-    "Oboe",
-    "English Horn",
-    "Bassoon",
-    "Clarinet",
-    "Piccolo",
-    "Flute",
-    "Recorder",
-    "Pan Flute",
-    "Bottle Blow",
-    "Shakuhachi",
-    "Whistle",
-    "Ocarina",
-    "Synth Lead 1 - Square",
-    "Synth Lead 2 - Sawtooth",
-    "Synth Lead 3 - Calliope",
-    "Synth Lead 4 - Chiff",
-    "Synth Lead 5 - Charang",
-    "Synth Lead 6 - Voice",
-    "Synth Lead 7 - Fifths",
-    "Synth Lead 8 - Brass + Lead",
-    "Synth Pad 1 - New Age",
-    "Synth Pad 2 - Warm",
-    "Synth Pad 3 - Polysynth",
-    "Synth Pad 4 - Choir",
-    "Synth Pad 5 - Bowed",
-    "Synth Pad 6 - Metallic",
-    "Synth Pad 7 - Halo",
-    "Synth Pad 8 - Sweep"
-]
-
-if os.getenv("DEBUG") == 'TRUE':
-    logging.basicConfig(level=logging.DEBUG)
-
 
 class settingswindow(QDialog):
 
@@ -278,12 +173,3 @@ class settingswindow(QDialog):
             op='edit', parent=self, exname=exname, extext=extext
         )
         w.exec_()
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    QCoreApplication.setOrganizationName(APPLICATION_NAME)
-    QCoreApplication.setApplicationName(APPLICATION_NAME)
-    widget = settingswindow()
-    widget.show()
-    sys.exit(app.exec_())
