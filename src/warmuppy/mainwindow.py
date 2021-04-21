@@ -3,6 +3,8 @@ import tempfile
 import logging
 import os
 
+from shutil import copyfile
+
 from PySide2.QtWidgets import (
     QMainWindow, QRadioButton, QStyle
 )
@@ -30,6 +32,7 @@ class mainwindow(QMainWindow):
 
     # Connected to the settings window, to know if they changed
     settings_signal = Signal()
+    midi_ready_signal = Signal()
 
     def __init__(self):
         super(mainwindow, self).__init__()
@@ -321,6 +324,7 @@ class mainwindow(QMainWindow):
         mid.save(file=midi_file)
         midi_file.flush()
         midi_file.close()
+        self.midi_ready_signal.emit()
         pygame.mixer.music.load(midi_file.name)
 
         # Once midi is loaded, start the % timers and play it
@@ -329,6 +333,9 @@ class mainwindow(QMainWindow):
         pygame.mixer.music.play()
 
         # Cleanup
+        if 'WARMUPPY_KEEP_MIDI' in os.environ:
+            midi_copy = os.environ['WARMUPPY_KEEP_MIDI']
+            copyfile(midi_file.name, midi_copy)
         os.remove(midi_file.name)
 
     def stop(self):
