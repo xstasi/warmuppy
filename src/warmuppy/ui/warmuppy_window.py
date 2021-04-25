@@ -3,7 +3,7 @@ import logging
 from PySide2.QtWidgets import (
     QMainWindow, QRadioButton, QStyle
 )
-from PySide2.QtCore import QTimer
+from PySide2.QtCore import QTimer, Signal
 from PySide2.QtGui import QIcon
 
 from warmuppy.ui.dialogs.warmuppywindow import Ui_WarmuppyWindow
@@ -18,6 +18,8 @@ from warmuppy.warmuppy import Warmuppy
 
 
 class WarmuppyWindow(Warmuppy, QMainWindow):
+
+    midi_ready_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -134,6 +136,7 @@ class WarmuppyWindow(Warmuppy, QMainWindow):
         self.ui.progressBar.setValue(0)
 
         timer_data = super().play_exercise()
+        self.midi_ready_signal.emit()
 
         logging.debug(timer_data)
         for percent, delay in timer_data:

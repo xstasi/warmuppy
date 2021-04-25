@@ -116,3 +116,8 @@ class SettingsWindow(Settings, QDialog):
             op='edit', parent=self, exname=exercise_namename, extext=exercise_text
         )
         w.exec_()
+
+    def set_instrument(self, s):
+        instrument_name = s.text()
+        instrument_id = INSTRUMENTS.index(instrument_name)
+        super().set_instrument(instrument_id)

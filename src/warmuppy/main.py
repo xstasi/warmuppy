@@ -10,7 +10,6 @@ from warmuppy.constants import APPLICATION_NAME
 
 
 def main():
-    pygame.init()
     app = QApplication([])
     QCoreApplication.setOrganizationName(APPLICATION_NAME)
     QCoreApplication.setApplicationName(APPLICATION_NAME)

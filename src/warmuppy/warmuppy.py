@@ -1,7 +1,11 @@
+import shutil
+
 import pygame
 import tempfile
 import logging
 import os
+
+from shutil import copyfile
 
 from mido import Message, MidiFile, MidiTrack
 
@@ -20,6 +24,8 @@ class Warmuppy:
     def __init__(self):
 
         super().__init__()
+
+        pygame.init()
 
         # Instance variables
         self.settings = QSettings()
@@ -77,14 +83,15 @@ class Warmuppy:
         self.settings.setValue('octave', octave)
 
     def change_exercise(self, i):
-        self.exercise = i
         if not self.exercises:
             logging.debug("No exercise to change to, skipping")
             return
         try:
             ex = self.exercises[i]
+            self.exercise = i
         except IndexError:
             ex = self.exercises[0]
+            self.exercise = 0
         logging.debug(f"Selected exercise {ex[0]} ({ex[1]})")
 
     # Generate boilerplate setters
@@ -106,8 +113,6 @@ class Warmuppy:
 
     # Go {step} semitones up or down
     def bump_note(self, up):
-
-        self.stop()
 
         # Beginning of 3rd octave + selected octave * semitones + note
         base_note = 24 + (self.octave - 1) * 12 + self.note
@@ -211,6 +216,8 @@ class Warmuppy:
         pygame.mixer.music.play()
 
         # Cleanup
+        if 'WARMUPPY_KEEP_MIDI' in os.environ:
+            copyfile(midi_file.name, os.environ['WARMUPPY_KEEP_MIDI'])
         os.remove(midi_file.name)
 
         return timer_data

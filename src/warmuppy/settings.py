@@ -10,6 +10,8 @@ from mido import Message, MidiFile, MidiTrack
 from warmuppy.resources import resources  # noqa
 from warmuppy.constants import INSTRUMENTS
 
+from shutil import copyfile
+
 
 class Settings:
 
@@ -19,6 +21,8 @@ class Settings:
         super().__init__()
         self.settings = QSettings()
 
+        if not pygame.get_init():
+            pygame.init()
         # Instance variables
         self.exercises = []
         self.instrument = int(self.settings.value('instrument'))
@@ -50,11 +54,12 @@ class Settings:
         new_exercises = []
         # If the reloaded exercise is existing then update it in memory,
         #   otherwise just add it
+        exercise_contents = list(map(int, exercise_text.split()))
         if exercise_name in exercise_names:
             for ex in self.exercises:
                 if ex[0] == exercise_name:
                     new_exercises.append(
-                        [ex[0], exercise_text.split()]
+                        [ex[0], exercise_contents]
                     )
                 else:
                     new_exercises.append(
@@ -62,11 +67,9 @@ class Settings:
                     )
             self.exercises = new_exercises
         else:
-            self.exercises.append([exercise_name, exercise_text.split()])
+            self.exercises.append([exercise_name, exercise_contents])
 
-    def set_instrument(self, s):
-        instrument_name = s.text()
-        instrument_id = INSTRUMENTS.index(instrument_name)
+    def set_instrument(self, instrument_id):
         self.instrument = instrument_id
 
     def save_settings(self):
@@ -77,6 +80,7 @@ class Settings:
             self.settings.setValue(ex[0], ex[1])
         self.settings.endArray()
         self.settings.setValue('instrument', self.instrument)
+        self.settings.sync()
 
     def preview(self):
         pygame.mixer.music.stop()
@@ -98,4 +102,6 @@ class Settings:
         midi_file.close()
         pygame.mixer.music.load(midi_file.name)
         pygame.mixer.music.play()
+        if 'WARMUPPY_KEEP_MIDI' in os.environ:
+            copyfile(midi_file.name, os.environ['WARMUPPY_KEEP_MIDI'])
         os.remove(midi_file.name)
