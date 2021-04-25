@@ -64,14 +64,14 @@ class WarmuppyWindow(Warmuppy, QMainWindow):
         for note in NOTES:
             x = self.findChild(QRadioButton, f"radioButton_{note}")
             x.toggled.connect(
-                lambda toggled, note=note:
-                    self.change_note(note) if toggled else None
+                lambda toggled, my_note=note:
+                    self.change_note(my_note) if toggled else None
             )
         for octave in range(1, 8):
             x = self.findChild(QRadioButton, f"radioButton_O{octave}")
             x.toggled.connect(
-                lambda toggled, octave=octave:
-                    self.change_octave(octave) if toggled else None
+                lambda toggled, my_octave=octave:
+                    self.change_octave(my_octave) if toggled else None
             )
 
         # Load UI data

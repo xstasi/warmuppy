@@ -7,12 +7,13 @@ from PySide2.QtCore import QSettings
 
 from mido import Message, MidiFile, MidiTrack
 
-from warmuppy.resources import resources # noqa
+from warmuppy.resources import resources  # noqa
 from warmuppy.constants import INSTRUMENTS
 
-class Settings():
 
-    def __init__(self, parent=None):
+class Settings:
+
+    def __init__(self):
 
         # Standard constructor stuff
         super().__init__()
@@ -33,15 +34,15 @@ class Settings():
             ])
         self.settings.endArray()
 
-    def remove_exercise(self,exname):
+    def remove_exercise(self, exercise_name):
         # Replace self.exercises with a copy without the selected exercise
         new_exercises = []
         for ex in self.exercises:
-            if ex[0] != exname:
+            if ex[0] != exercise_name:
                 new_exercises.append(ex)
         self.exercises = new_exercises
 
-    def reload_exercise(self, exname, extext):
+    def reload_exercise(self, exercise_name, exercise_text):
         # Load all exercise names
         exercise_names = []
         for ex in self.exercises:
@@ -49,11 +50,11 @@ class Settings():
         new_exercises = []
         # If the reloaded exercise is existing then update it in memory,
         #   otherwise just add it
-        if exname in exercise_names:
+        if exercise_name in exercise_names:
             for ex in self.exercises:
-                if ex[0] == exname:
+                if ex[0] == exercise_name:
                     new_exercises.append(
-                        [ex[0], extext.split()]
+                        [ex[0], exercise_text.split()]
                     )
                 else:
                     new_exercises.append(
@@ -61,8 +62,7 @@ class Settings():
                     )
             self.exercises = new_exercises
         else:
-            self.exercises.append([exname, extext.split()])
-
+            self.exercises.append([exercise_name, exercise_text.split()])
 
     def set_instrument(self, s):
         instrument_name = s.text()
@@ -84,14 +84,14 @@ class Settings():
         mid = MidiFile()
         track = MidiTrack()
         mid.tracks.append(track)
-        prog = self.instrument
-        track.append(Message('program_change', program=prog, time=0))
+        instrument = self.instrument
+        track.append(Message('program_change', program=instrument, time=0))
         note = 60
         track.append(
-            Message('note_on', note=(note), velocity=100, time=0)
+            Message('note_on', note=note, velocity=100, time=0)
         )
         track.append(
-            Message('note_off', note=(note), time=2000)
+            Message('note_off', note=note, time=2000)
         )
         mid.save(file=midi_file)
         midi_file.flush()

@@ -3,7 +3,6 @@ import tempfile
 import logging
 import os
 
-
 from mido import Message, MidiFile, MidiTrack
 
 from PySide2.QtCore import QSettings
@@ -16,7 +15,7 @@ from warmuppy.constants import (
 )
 
 
-class Warmuppy():
+class Warmuppy:
 
     def __init__(self):
 
@@ -34,8 +33,8 @@ class Warmuppy():
         self.step = int(self.settings.value('step', DEFAULT_STEP))
         prev = self.settings.value('preview', DEFAULT_PREVIEW)
         self.preview = prev in ['true', True]
-        prol = self.settings.value('prolong', DEFAULT_PROLONG)
-        self.prolong = prol in ['true', True]
+        prolonged = self.settings.value('prolong', DEFAULT_PROLONG)
+        self.prolong = prolonged in ['true', True]
         self.preview_time = int(
             self.settings.value('preview_time', DEFAULT_PREVIEW_TIME)
         )
@@ -57,7 +56,7 @@ class Warmuppy():
                 self.settings.value(ex)
             ])
         self.settings.endArray()
-        if self.exercises == []:
+        if not self.exercises:
             self.settings.beginWriteArray('exercises')
             for ex in DEFAULT_EXERCISES:
                 self.exercises.append(ex)
@@ -72,14 +71,14 @@ class Warmuppy():
         self.note = note_id
         self.settings.setValue('note', note_id)
 
-    def change_octave(self, oct):
-        logging.debug(f"New octave is {oct}")
-        self.octave = oct
-        self.settings.setValue('octave', oct)
+    def change_octave(self, octave):
+        logging.debug(f"New octave is {octave}")
+        self.octave = octave
+        self.settings.setValue('octave', octave)
 
     def change_exercise(self, i):
         self.exercise = i
-        if self.exercises == []:
+        if not self.exercises:
             logging.debug("No exercise to change to, skipping")
             return
         try:
@@ -114,16 +113,16 @@ class Warmuppy():
         base_note = 24 + (self.octave - 1) * 12 + self.note
         logging.debug(f"Current note: {base_note}")
         # Highest playable note is the last of the 8th octave
-        max = 8 * 12 + 24
+        max_note = 8 * 12 + 24
         # Lowest is C3
-        min = 25
+        min_note = 25
 
         # Compute new note
         if up:
-            if base_note < max:
+            if base_note < max_note:
                 base_note += self.step
         else:
-            if base_note > min:
+            if base_note > min_note:
                 base_note -= self.step
         logging.debug(f"New note: {base_note}")
 
@@ -169,10 +168,10 @@ class Warmuppy():
         if self.preview:
             timer_delay = int(duration*self.preview_time)
             track.append(
-                Message('note_on', note=(base_note), velocity=100, time=0)
+                Message('note_on', note=base_note, velocity=100, time=0)
             )
             track.append(
-                Message('note_off', note=(base_note), time=timer_delay)
+                Message('note_off', note=base_note, time=timer_delay)
             )
 
         timer_data = []
