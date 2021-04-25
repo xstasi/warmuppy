@@ -52,7 +52,9 @@ class ExerciseEditWindow(QDialog):
 
     # Signal with exercise name and content to send to parent
     def send_signal(self):
-        self.parent.exercise_signal.emit(self.exercise_name, self.exercise_text)
+        self.parent.exercise_signal.emit(
+            self.exercise_name, self.exercise_text
+        )
 
     # 'Save' button handler
     def save_settings(self):

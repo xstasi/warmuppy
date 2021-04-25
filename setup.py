@@ -1,5 +1,5 @@
 import setuptools
-import wheel
+import wheel # noqa
 import os
 import PySide2
 from pathlib import Path

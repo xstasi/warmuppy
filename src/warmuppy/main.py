@@ -1,7 +1,5 @@
 import sys
 
-import pygame
-
 from PySide2.QtWidgets import QApplication
 from PySide2.QtCore import QCoreApplication
 

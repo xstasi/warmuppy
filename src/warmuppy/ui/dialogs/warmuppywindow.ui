@@ -443,7 +443,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinProlong"/>
+             <widget class="QSpinBox" name="spinProlong">
+              <property name="maximum">
+               <number>3</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

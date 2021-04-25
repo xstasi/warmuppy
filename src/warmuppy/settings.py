@@ -8,7 +8,6 @@ from PySide2.QtCore import QSettings
 from mido import Message, MidiFile, MidiTrack
 
 from warmuppy.resources import resources  # noqa
-from warmuppy.constants import INSTRUMENTS
 
 from shutil import copyfile
 

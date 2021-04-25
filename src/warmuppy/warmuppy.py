@@ -1,5 +1,3 @@
-import shutil
-
 import pygame
 import tempfile
 import logging
