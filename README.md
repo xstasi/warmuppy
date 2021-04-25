@@ -34,6 +34,7 @@ The source package can be built and installed using [setuptools](https://pypi.or
 
 ```
 pip install -r requirements.txt
+python setup.py build
 python setup.py install
 ```
 
@@ -42,6 +43,7 @@ The single-binary releases can be rebuilt on either Windows or Linux by using py
 ```
 pip install -r requirements.txt
 pip install pyinstaller
+python setup.py build
 python setup.py install
 pyinstaller --clean -F -w -i src/warmuppy/resources/icon.ico -n warmuppy main.py
 ```

@@ -77,3 +77,11 @@ Thumbs.db
 build
 dist
 *.spec
+
+# project generated data
+src/warmuppy/ui/dialogs/*.py
+src/warmuppy/resources/*.py
+src/warmuppy.egg-info
+
+# testing stuff
+*.mid

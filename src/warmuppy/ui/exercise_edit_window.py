@@ -1,5 +1,6 @@
 import logging
-from warmuppy.ui.exerciseedit import Ui_ExerciseEdit
+
+from warmuppy.ui.dialogs.exerciseeditwindow import Ui_ExerciseEditWindow
 
 from PySide2.QtWidgets import QDialog
 
@@ -11,7 +12,7 @@ from warmuppy.resources import resources # noqa
 
 
 # Generic exercise editing window
-class exerciseEditWindow(QDialog):
+class ExerciseEditWindow(QDialog):
 
     # Used to transmit the exercise name and data back to the settings window
     exercise_signal = Signal(str, str)
@@ -19,20 +20,20 @@ class exerciseEditWindow(QDialog):
     def __init__(self, op, exname='', extext='', exercises=[], parent=None):
 
         # Standard constructor stuff
-        super(exerciseEditWindow, self).__init__()
-        self.ui = Ui_ExerciseEdit()
+        super().__init__()
+        self.ui = Ui_ExerciseEditWindow()
         self.setWindowIcon(QIcon(':/icons/icon.ico'))
         self.ui.setupUi(self)
 
         # Instance variables
         self.parent = parent
         self.op = op
-        self.exname = exname
-        self.extext = extext
+        self.exercise_name = exname
+        self.exercise_text = extext
         self.exercises = exercises
 
         if op == 'add':
-            # Start new exercies as invalid to prevent saving empty stuff
+            # Start new exercises as invalid to prevent saving empty stuff
             self.ui.saveButton.setEnabled(False)
         else:
             # Existing exercises are assumed to be already good
@@ -51,7 +52,7 @@ class exerciseEditWindow(QDialog):
 
     # Signal with exercise name and content to send to parent
     def send_signal(self):
-        self.parent.exercise_signal.emit(self.exname, self.extext)
+        self.parent.exercise_signal.emit(self.exercise_name, self.exercise_text)
 
     # 'Save' button handler
     def save_settings(self):
@@ -61,11 +62,11 @@ class exerciseEditWindow(QDialog):
     # Exercise validator
     def validate(self):
         is_junk = False
-        self.exname = self.ui.nameEdit.text()
-        self.extext = self.ui.textEdit.text()
+        self.exercise_name = self.ui.nameEdit.text()
+        self.exercise_text = self.ui.textEdit.text()
 
         # Check that all parts of exercise are numbers
-        steps = self.extext.split()
+        steps = self.exercise_text.split()
         for step in steps:
             try:
                 int(step)
@@ -75,10 +76,10 @@ class exerciseEditWindow(QDialog):
         # Assume that exercise data is invalid
         self.ui.saveButton.setEnabled(False)
 
-        if self.exname == '':
+        if self.exercise_name == '':
             self.ui.labelStatus.setText('Missing exercise name')
             return
-        if self.extext == '':
+        if self.exercise_text == '':
             self.ui.labelStatus.setText('Missing exercise data')
             return
         if is_junk:
@@ -86,11 +87,11 @@ class exerciseEditWindow(QDialog):
             return
 
         # Do not allow two exercises with the same name
-        if self.op == 'add' and self.exname in self.exercises:
+        if self.op == 'add' and self.exercise_name in self.exercises:
             self.ui.labelStatus.setText('Duplicate exercise name')
             return
 
-        logging.debug(f"Name: {self.exname}")
-        logging.debug(f"Text: {self.extext}")
+        logging.debug(f"Name: {self.exercise_name}")
+        logging.debug(f"Text: {self.exercise_text}")
         self.ui.labelStatus.setText('OK')
         self.ui.saveButton.setEnabled(True)
