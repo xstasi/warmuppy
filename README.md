@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/xstasi/warmuppy/tree/master.svg?style=shield)](https://circleci.com/gh/xstasi/warmuppy) [![EUPL License](https://img.shields.io/badge/license-EUPL-blue)](https://raw.githubusercontent.com/xstasi/warmuppy/master/COPYING) [![Windows+Linux](https://img.shields.io/badge/platforms-linux%20%7C%20win--64-yellow)](https://github.com/xstasi/warmuppy/releases)
+
 # Warmuppy
 
 ## What is it?
