@@ -17,6 +17,8 @@ jobs:
           keys:
             - pyenv_opt
       - run: test -d /opt/circleci/.pyenv/.git || (cd ; sudo rm -rf  /opt/circleci/.pyenv ; curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash; echo -e 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' | tee ~/.bashrc ~/.profile ~/.bash_profile)
+      - run: (cd /opt/circleci/.pyenv ; git pull)
+      - run: git clone https://github.com/pyenv/pyenv-virtualenv.git /opt/circleci/.pyenv/plugins/pyenv-virtualenv
       - run: env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install --skip-existing  3.9.4
       - save_cache:
           key: pyenv_opt
@@ -31,7 +33,7 @@ jobs:
       - run: python setup.py build
       - run: python setup.py install
       - run: pip install pytest pytest-qt pytest-forked
-      - run: xvfb-run -a pytest --junitxml=test-results/junit.xml test/
+      - run: xvfb-run -a pytest --junitxml=test-results/junit.xml --forked test/
       - store_test_results:
           path: test-results
   build-windows-bundle:
@@ -70,6 +72,8 @@ jobs:
           keys:
             - pyenv_opt
       - run: test -d /opt/circleci/.pyenv/.git || (cd ; sudo rm -rf  /opt/circleci/.pyenv ; curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash; echo -e 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' | tee ~/.bashrc ~/.profile ~/.bash_profile)
+      - run: (cd /opt/circleci/.pyenv ; git pull)
+      - run: git clone https://github.com/pyenv/pyenv-virtualenv.git /opt/circleci/.pyenv/plugins/pyenv-virtualenv
       - run: env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install --skip-existing  3.9.4
       - save_cache:
           key: pyenv_opt
