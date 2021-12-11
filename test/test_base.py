@@ -211,12 +211,12 @@ class TestBase:
         settings.clear()
         settings.setValue('instrument', 123)
         settings.beginWriteArray('exercises')
-        settings.setValue('sample1', [1, 2, 3])
-        settings.setValue('sample2', [4, 5, 6])
+        settings.setValue('sample1', ['1', '2', '3'])
+        settings.setValue('sample2', ['4', '5', '6'])
         settings.endArray()
         app.reload_settings()
         assert app.instrument == 123
         assert app.exercises == [
-            ['sample1', [1, 2, 3]],
-            ['sample2', [4, 5, 6]]
+            ['sample1', ['1', '2', '3']],
+            ['sample2', ['4', '5', '6']]
         ]

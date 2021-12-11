@@ -23,8 +23,8 @@ def prepare_main(qtbot):
     q_settings = QtCore.QSettings()
     q_settings.setValue('instrument', 123)
     q_settings.beginWriteArray('exercises')
-    q_settings.setValue('sample1', [1, 2, 3])
-    q_settings.setValue('sample2', [4, 5, 6])
+    q_settings.setValue('sample1', ['1', '2', '3'])
+    q_settings.setValue('sample2', ['4', '5', '6'])
     q_settings.endArray()
     q_settings.sync()
     widget = SettingsWindow()
@@ -73,7 +73,7 @@ class TestSave:
             ])
         q_settings.endArray()
         assert saved_exercises == [
-            ['sample2', [4, 5, 6]]
+            ['sample2', ['4', '5', '6']]
         ]
         assert self.bot.waitSignal(self.widget.settings_signal, timeout=1000)
 

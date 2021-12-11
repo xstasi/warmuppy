@@ -55,9 +55,12 @@ class Warmuppy:
         for ex in self.settings.allKeys():
             if ex == 'size':
                 continue
+            exv = self.settings.value(ex)
+            if isinstance(exv,str):
+                exv = [exv]
             self.exercises.append([
                 ex,
-                self.settings.value(ex)
+                exv
             ])
         self.settings.endArray()
         if not self.exercises:
