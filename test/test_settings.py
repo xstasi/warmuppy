@@ -22,8 +22,8 @@ def temp_settings():
     q_settings = QSettings()
     q_settings.setValue('instrument', 123)
     q_settings.beginWriteArray('exercises')
-    q_settings.setValue('sample1', [1, 2, 3])
-    q_settings.setValue('sample2', [4, 5, 6])
+    q_settings.setValue('sample1', ['1', '2', '3'])
+    q_settings.setValue('sample2', ['4', '5', '6'])
     q_settings.endArray()
     q_settings.sync()
     settings = Settings()
@@ -36,8 +36,8 @@ class TestSettings:
         settings = temp_settings
         assert settings.instrument == 123
         assert settings.exercises == [
-            ['sample1', [1, 2, 3]],
-            ['sample2', [4, 5, 6]]
+            ['sample1', ['1', '2', '3']],
+            ['sample2', ['4', '5', '6']]
         ]
 
     def test_set_instrument(self, temp_settings):
@@ -49,30 +49,30 @@ class TestSettings:
         settings = temp_settings
         settings.remove_exercise('sample1')
         assert settings.exercises == [
-            ['sample2', [4, 5, 6]]
+            ['sample2', ['4', '5', '6']]
         ]
 
     def test_remove_exercise_2(self, temp_settings):
         settings = temp_settings
         settings.remove_exercise('sample2')
         assert settings.exercises == [
-            ['sample1', [1, 2, 3]]
+            ['sample1', ['1', '2', '3']]
         ]
 
     def test_reload_exercise_1(self, temp_settings):
         settings = temp_settings
         settings.reload_exercise('sample1', '2 2 2')
         assert settings.exercises == [
-            ['sample1', [2, 2, 2]],
-            ['sample2', [4, 5, 6]]
+            ['sample1', ['2', '2', '2']],
+            ['sample2', ['4', '5', '6']]
         ]
 
     def test_reload_exercise_2(self, temp_settings):
         settings = temp_settings
         settings.reload_exercise('sample2', '3 3 3')
         assert settings.exercises == [
-            ['sample1', [1, 2, 3]],
-            ['sample2', [3, 3, 3]]
+            ['sample1', ['1', '2', '3']],
+            ['sample2', ['3', '3', '3']]
         ]
 
     def test_save_settings(self, temp_settings):

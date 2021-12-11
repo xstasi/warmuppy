@@ -111,7 +111,10 @@ class SettingsWindow(Settings, QDialog):
         exercise_text = ''
         for ex in self.exercises:
             if ex[0] == exercise_name:
-                exercise_text = ' '.join(list(map(str, ex[1])))
+                exv=ex[1]
+                if isinstance(exv,str):
+                    exv=[exv]
+                exercise_text = ' '.join(exv)
         w = ExerciseEditWindow(
             op='edit', parent=self, exname=exercise_name, extext=exercise_text
         )

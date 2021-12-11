@@ -53,7 +53,7 @@ class Settings:
         new_exercises = []
         # If the reloaded exercise is existing then update it in memory,
         #   otherwise just add it
-        exercise_contents = list(map(int, exercise_text.split()))
+        exercise_contents = exercise_text.split()
         if exercise_name in exercise_names:
             for ex in self.exercises:
                 if ex[0] == exercise_name:
