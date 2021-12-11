@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>267</width>
-    <height>247</height>
+    <width>805</width>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -72,6 +72,27 @@
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelText3">
+       <property name="text">
+        <string>Add a - to prolong the note by half a beat, or a . to prolong by a quarter beat.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>For example: base, perfect fifth for 1.75 beats, base again, would be &quot;0 7-. 0&quot;.</string>
        </property>
       </widget>
      </item>

@@ -1,5 +1,7 @@
 import logging
 
+from re import sub
+
 from warmuppy.ui.dialogs.exerciseeditwindow import Ui_ExerciseEditWindow
 
 from PySide2.QtWidgets import QDialog
@@ -71,7 +73,7 @@ class ExerciseEditWindow(QDialog):
         steps = self.exercise_text.split()
         for step in steps:
             try:
-                int(step)
+                sub(r'[^0-9-.]+', '', step)
             except ValueError:
                 is_junk = True
 

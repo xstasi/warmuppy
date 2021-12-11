@@ -3,6 +3,8 @@ import tempfile
 import logging
 import os
 
+from re import sub
+
 from shutil import copyfile
 
 from mido import Message, MidiFile, MidiTrack
@@ -167,12 +169,12 @@ class Warmuppy:
         # Seconds per beat
         seconds = 60 / self.bpm
         # Note duration is one beat minus the cut, in milliseconds
-        duration = (seconds - self.cut) * 1000
+        base_duration = (seconds - self.cut) * 1000
 
         # Prepend the base note to the midi if the preview is selected
         timer_delay = 0
         if self.preview:
-            timer_delay = int(duration*self.preview_time)
+            timer_delay = int(base_duration*self.preview_time)
             track.append(
                 Message('note_on', note=base_note, velocity=100, time=0)
             )
@@ -184,8 +186,14 @@ class Warmuppy:
         # Add the rest of the notes
         for idx, p in enumerate(seq):
 
-            # Exercises are stored as strings
-            step = int(p)
+            # Normalise the note step as a string
+            item = str(p)
+
+            # Extract the step
+            step = int(sub(r'[^0-9]','',item))
+
+            # If the number has dashes or dots, add half a beat or a quarter beat for each, respectively
+            duration = base_duration * (1 + item.count('-')*0.5 + item.count('.')*0.25)
 
             # Calculate percentage of current step
             current_index = idx + 1
@@ -194,7 +202,7 @@ class Warmuppy:
             # If this is the last note and the user wants to, prolong it
             if current_index == len(seq) and self.prolong:
                 logging.debug(f"prolonging {step}")
-                delay = int(duration*self.prolong_time)
+                delay = int(base_duration*self.prolong_time)
             else:
                 delay = int(duration)
 
@@ -205,7 +213,8 @@ class Warmuppy:
             track.append(
                 Message('note_off', note=(base_note+step), time=delay)
             )
-            timer_data.append([percent, timer_delay+duration*idx])
+            timer_data.append([percent, timer_delay])
+            timer_delay += duration
 
         # Save midi file and load it with pygame separately,
         #   to avoid race conditions

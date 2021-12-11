@@ -29,13 +29,18 @@ def temp_settings():
     yield app, temp_home.name
 
 
-def first_note(midi_file):
+def first_midi_item(midi_file,skip=0):
     mf = MidiFile(midi_file)
     track = mf.tracks[0]
     track.reverse()
     track.pop()  # program_change
-    return track.pop().note
+    for x in range(0,skip): # skip instructions as needed:
+        print(track.pop())
+    return track.pop()
 
+
+def first_note(midi_file):
+    return first_midi_item(midi_file).note
 
 class TestBase:
 
@@ -198,6 +203,54 @@ class TestBase:
         app.play_exercise()
         app.stop()
         assert first_note(temp_midi.name) == 54
+
+    def test_note_length_dash(self, temp_settings):
+        temp_midi = tempfile.NamedTemporaryFile()
+        os.environ['WARMUPPY_KEEP_MIDI'] = temp_midi.name
+        app, home = temp_settings
+        app.change_preview(False)
+        app.change_prolong(False)
+        app.change_bpm(60)
+        app.change_cut(0)
+        app.exercises = [
+            ['sample1', ["1-"]],
+        ]
+        app.change_exercise(0)
+        app.play_exercise()
+        app.stop()
+        assert first_midi_item(temp_midi.name,1).time == 1500
+
+    def test_note_length_dot(self, temp_settings):
+        temp_midi = tempfile.NamedTemporaryFile()
+        os.environ['WARMUPPY_KEEP_MIDI'] = temp_midi.name
+        app, home = temp_settings
+        app.change_preview(False)
+        app.change_prolong(False)
+        app.change_bpm(60)
+        app.change_cut(0)
+        app.exercises = [
+            ['sample1', ["1."]],
+        ]
+        app.change_exercise(0)
+        app.play_exercise()
+        app.stop()
+        assert first_midi_item(temp_midi.name,1).time == 1250
+
+    def test_note_length_dash_dot(self, temp_settings):
+        temp_midi = tempfile.NamedTemporaryFile()
+        os.environ['WARMUPPY_KEEP_MIDI'] = temp_midi.name
+        app, home = temp_settings
+        app.change_preview(False)
+        app.change_prolong(False)
+        app.change_bpm(60)
+        app.change_cut(0)
+        app.exercises = [
+            ['sample1', ["1-."]],
+        ]
+        app.change_exercise(0)
+        app.play_exercise()
+        app.stop()
+        assert first_midi_item(temp_midi.name,1).time == 1750
 
     def test_stop(self, temp_settings):
         app, home = temp_settings
