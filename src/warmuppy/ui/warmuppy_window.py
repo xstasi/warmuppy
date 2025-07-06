@@ -1,10 +1,10 @@
 import logging
 
-from PySide2.QtWidgets import (
+from PySide6.QtWidgets import (
     QMainWindow, QRadioButton, QStyle
 )
-from PySide2.QtCore import QTimer, Signal
-from PySide2.QtGui import QIcon
+from PySide6.QtCore import QTimer, Signal
+from PySide6.QtGui import QIcon
 
 from warmuppy.ui.dialogs.warmuppywindow import Ui_WarmuppyWindow
 

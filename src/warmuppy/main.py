@@ -1,7 +1,7 @@
 import sys
 
-from PySide2.QtWidgets import QApplication
-from PySide2.QtCore import QCoreApplication
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QCoreApplication
 
 from warmuppy.ui.warmuppy_window import WarmuppyWindow
 from warmuppy.constants import APPLICATION_NAME

@@ -9,7 +9,7 @@ from shutil import copyfile
 
 from mido import Message, MidiFile, MidiTrack
 
-from PySide2.QtCore import QSettings
+from PySide6.QtCore import QSettings
 
 from warmuppy.resources import resources # noqa
 from warmuppy.constants import (

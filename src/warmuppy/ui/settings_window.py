@@ -1,8 +1,8 @@
 import logging
 
-from PySide2.QtWidgets import QStyle, QDialog
-from PySide2.QtCore import Signal
-from PySide2.QtGui import QIcon
+from PySide6.QtWidgets import QStyle, QDialog
+from PySide6.QtCore import Signal
+from PySide6.QtGui import QIcon
 
 from warmuppy.ui.dialogs.settingswindow import Ui_SettingsWindow
 from warmuppy.ui.exercise_edit_window import ExerciseEditWindow

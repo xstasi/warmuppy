@@ -4,11 +4,11 @@ from re import sub
 
 from warmuppy.ui.dialogs.exerciseeditwindow import Ui_ExerciseEditWindow
 
-from PySide2.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog
 
-from PySide2.QtCore import Signal
+from PySide6.QtCore import Signal
 
-from PySide2.QtGui import QIcon
+from PySide6.QtGui import QIcon
 
 from warmuppy.resources import resources # noqa
 

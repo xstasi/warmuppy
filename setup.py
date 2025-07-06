@@ -1,7 +1,7 @@
 import setuptools
 import wheel # noqa
 import os
-import PySide2
+import PySide6
 from pathlib import Path
 from distutils.command.build import build
 from subprocess import Popen, PIPE
@@ -15,8 +15,8 @@ class MyBuilder(build):
     def qt_tool_wrapper(qt_tool, args):
         # Taking care of pyside2-uic, pyside2-rcc, and pyside2-designer
         # listed as an entrypoint in setup.py
-        pyside_dir = os.path.dirname(PySide2.__file__)
-        exe = os.path.join(pyside_dir, qt_tool)
+        pyside_dir = os.path.dirname(PySide6.__file__)
+        exe = os.path.join(pyside_dir, 'Qt', 'libexec', qt_tool)
 
         cmd = [exe] + args
         proc = Popen(cmd, stderr=PIPE)

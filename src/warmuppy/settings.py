@@ -3,7 +3,7 @@ import os
 import pygame
 import tempfile
 
-from PySide2.QtCore import QSettings
+from PySide6.QtCore import QSettings
 
 from mido import Message, MidiFile, MidiTrack
 
