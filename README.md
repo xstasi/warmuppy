@@ -20,13 +20,9 @@ This is a screenshot of the main window:
 
 ## Requirements
 
-* Python >= 3.7
-* Python libraries specified in `requirements.txt` (namely [PySide2](https://pypi.org/project/PySide2/), [mido](https://pypi.org/project/mido/), [pygame](https://www.pygame.org/))
-* A MIDI synthesiser supported by pygame
-  * Windows and OSX (untested) already ship with one
-  * On Linux you can use [fluidsynth](https://www.fluidsynth.org) with [freepats](https://freepats.zenvoid.org/SoundSets/general-midi.html)
-    * If running ArchLinux, you will need to install [freepats-legacy](https://aur.archlinux.org/packages/freepats-legacy/) from AUR and make a symlink from `/usr/share/freepats/timidity-freepats.cfg` to `/etc/timidity/freepats.cfg`
-
+* Python >= 3.10
+* Python libraries specified in `requirements.txt` (namely [PySide6](https://pypi.org/project/PySide6/), [mido](https://pypi.org/project/mido/), [pygame](https://www.pygame.org/))
+* Fluidsynth (OSX/Windows untested)
 
 ## Running and building
 
