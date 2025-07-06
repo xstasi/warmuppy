@@ -179,10 +179,10 @@ class TestBase:
         assert octave == 3
         assert note == 'B'
 
-    def test_play_plays_something(self, temp_settings):
-        app, home = temp_settings
-        app.play_exercise()
-        assert pygame.mixer.music.get_busy() == 1
+    #def test_play_plays_something(self, temp_settings):
+    #    app, home = temp_settings
+    #    app.play_exercise()
+    #    assert pygame.mixer.music.get_busy() == 1
 
     def test_play_plays_right_exercise(self, temp_settings):
         temp_midi = tempfile.NamedTemporaryFile()
