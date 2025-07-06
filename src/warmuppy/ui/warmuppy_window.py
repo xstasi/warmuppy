@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QTimer, Signal
 from PySide6.QtGui import QIcon
+from PySide6.QtGui import QShortcut, QKeySequence
 
 from warmuppy.ui.dialogs.warmuppywindow import Ui_WarmuppyWindow
 
@@ -62,6 +63,17 @@ class WarmuppyWindow(Warmuppy, QMainWindow):
         self.ui.actionAbout.triggered.connect(self.show_about)
         self.ui.actionHow_to_use.triggered.connect(self.show_howto)
         self.ui.actionExit.triggered.connect(self.close)
+
+        # Ctrl+Q shortcut to quit
+        shortcut = QShortcut(QKeySequence("Ctrl+Q"), self)
+        shortcut.activated.connect(self.close)
+        # Ctrl+, shortcut for settings
+        shortcut = QShortcut(QKeySequence("Ctrl+,"), self)
+        shortcut.activated.connect(self.show_settings)
+        # Space to play
+        shortcut = QShortcut(QKeySequence("space"), self)
+        shortcut.activated.connect(self.play_exercise)
+
         # Note/octave radio buttons
         for note in NOTES:
             x = self.findChild(QRadioButton, f"radioButton_{note}")
