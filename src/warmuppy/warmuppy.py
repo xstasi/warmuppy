@@ -17,6 +17,7 @@ from warmuppy.constants import (
     DEFAULT_BPM, DEFAULT_CUT, DEFAULT_STEP, DEFAULT_PROLONG, DEFAULT_PREVIEW,
     DEFAULT_PREVIEW_TIME, DEFAULT_PROLONG_TIME,
 )
+from warmuppy.warmuppy_player import WarmuppyPlayer
 
 
 class Warmuppy:
@@ -73,6 +74,10 @@ class Warmuppy:
             self.settings.endArray()
         self.exercise = DEFAULT_EXERCISE
         self.settings.setValue('instrument', self.instrument)
+
+        # Load player
+        self.player = WarmuppyPlayer()
+
 
     def change_note(self, note):
         note_id = self.notes.index(note)
@@ -221,9 +226,7 @@ class Warmuppy:
         mid.save(file=midi_file)
         midi_file.flush()
         midi_file.close()
-        pygame.mixer.music.load(midi_file.name)
-
-        pygame.mixer.music.play()
+        self.player.play(midi_file.name)
 
         # Cleanup
         if 'WARMUPPY_KEEP_MIDI' in os.environ:
@@ -233,8 +236,7 @@ class Warmuppy:
         return timer_data
 
     def stop(self):
-        # Stop the music
-        pygame.mixer.music.stop()
+        self.player.stop()
 
     # Settings window told us that something changed, so reload everything
     def reload_settings(self):

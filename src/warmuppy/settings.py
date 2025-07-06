@@ -1,6 +1,5 @@
 import os
 
-import pygame
 import tempfile
 
 from PySide6.QtCore import QSettings
@@ -8,6 +7,7 @@ from PySide6.QtCore import QSettings
 from mido import Message, MidiFile, MidiTrack
 
 from warmuppy.resources import resources  # noqa
+from warmuppy.warmuppy_player import WarmuppyPlayer
 
 from shutil import copyfile
 
@@ -20,8 +20,6 @@ class Settings:
         super().__init__()
         self.settings = QSettings()
 
-        if not pygame.get_init():
-            pygame.init()
         # Instance variables
         self.exercises = []
         self.instrument = int(self.settings.value('instrument'))
@@ -36,6 +34,7 @@ class Settings:
                 self.settings.value(ex)
             ])
         self.settings.endArray()
+        self.player = WarmuppyPlayer()
 
     def remove_exercise(self, exercise_name):
         # Replace self.exercises with a copy without the selected exercise
@@ -82,7 +81,6 @@ class Settings:
         self.settings.sync()
 
     def preview(self):
-        pygame.mixer.music.stop()
         midi_file = tempfile.NamedTemporaryFile(delete=False)
         mid = MidiFile()
         track = MidiTrack()
@@ -99,8 +97,8 @@ class Settings:
         mid.save(file=midi_file)
         midi_file.flush()
         midi_file.close()
-        pygame.mixer.music.load(midi_file.name)
-        pygame.mixer.music.play()
+        self.player.play(midi_file.name)
+
         if 'WARMUPPY_KEEP_MIDI' in os.environ:
             copyfile(midi_file.name, os.environ['WARMUPPY_KEEP_MIDI'])
         os.remove(midi_file.name)
