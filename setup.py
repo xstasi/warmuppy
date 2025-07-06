@@ -45,7 +45,7 @@ class MyBuilder(build):
 
 
 setuptools.setup(name='warmuppy',
-                 version='0.3',
+                 version='0.4',
                  description="A vocal warmup helper",
                  author="Alessandro Grassi",
                  author_email="alessandro@aggro.it",
