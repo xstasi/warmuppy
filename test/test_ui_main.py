@@ -5,8 +5,8 @@ from warmuppy.ui.warmuppy_window import WarmuppyWindow
 from warmuppy.constants import DEFAULT_PREVIEW, DEFAULT_PROLONG, DEFAULT_CUT
 from pytestqt.qt_compat import qt_api  # noqa
 import pytest
-from PySide2 import QtCore
-from PySide2.QtWidgets import QRadioButton, QPushButton
+from PySide6 import QtCore
+from PySide6.QtWidgets import QRadioButton, QPushButton
 from mido import MidiFile
 
 midi_file = tempfile.NamedTemporaryFile().name

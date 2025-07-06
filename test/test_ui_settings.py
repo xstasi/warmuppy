@@ -5,7 +5,7 @@ from warmuppy.ui.settings_window import SettingsWindow
 from warmuppy.constants import APPLICATION_NAME
 from pytestqt.qt_compat import qt_api  # noqa
 import pytest
-from PySide2 import QtCore
+from PySide6 import QtCore
 
 from mido import MidiFile
 

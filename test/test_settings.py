@@ -7,8 +7,8 @@ import pytest
 from warmuppy.settings import Settings
 from warmuppy.constants import APPLICATION_NAME
 
-from PySide2.QtCore import QSettings
-from PySide2.QtCore import QCoreApplication
+from PySide6.QtCore import QSettings
+from PySide6.QtCore import QCoreApplication
 
 from mido import MidiFile
 

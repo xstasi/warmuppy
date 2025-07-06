@@ -11,8 +11,8 @@ from warmuppy.constants import (
     DEFAULT_PREVIEW_TIME, DEFAULT_PROLONG_TIME,
 )
 
-from PySide2.QtCore import QSettings
-from PySide2.QtCore import QCoreApplication
+from PySide6.QtCore import QSettings
+from PySide6.QtCore import QCoreApplication
 
 from mido import MidiFile
 
@@ -21,7 +21,7 @@ from mido import MidiFile
 def temp_settings():
     temp_home = tempfile.TemporaryDirectory()
     os.environ['HOME'] = temp_home.name
-    os.environ['WARMUPPY_DEBUG'] = 'TRUE'
+    os.environ['DEBUG'] = 'TRUE'
     QCoreApplication.setOrganizationName(APPLICATION_NAME)
     QCoreApplication.setApplicationName(APPLICATION_NAME)
     app = Warmuppy()
